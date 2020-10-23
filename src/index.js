@@ -1,61 +1,72 @@
-import './style/main.css'
-import * as THREE from 'three'
+import * as THREE from "three";
+import { ObitControls } from "three/examples/jsm/controls/OrbitControls";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import "./style/main.css";
 
-/**
- * Sizes
- */
-const sizes = {}
-sizes.width = window.innerWidth
-sizes.height = window.innerHeight
+document.addEventListener("DOMContentLoaded", () => {
+  const game = new Game();
+  window.game = game; // Debug
+});
 
-window.addEventListener('resize', () =>
-{
-    // Save sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
+class Game {
+  constructor() {
+    this.sizes = {};
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
 
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(this.renderer.domElement);
 
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-})
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshPhongMaterial({ color: 0x00aaff });
+    this.cube = new THREE.Mesh(geometry, material);
 
-/**
- * Environnements
- */
-// Scene
-const scene = new THREE.Scene()
+    const light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(0, 20, 10);
+    const ambient = new THREE.AmbientLight(0x707070);
 
-// Camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.z = 3
-scene.add(camera)
+    this.scene.add(this.cube);
+    this.scene.add(light);
+    this.scene.add(ambient);
 
-// Test
-const cube = new THREE.Mesh(new THREE.BoxBufferGeometry(1, 1, 1), new THREE.MeshNormalMaterial())
-scene.add(cube)
+    this.camera.position.z = 3;
 
-// Renderer
-const renderer = new THREE.WebGLRenderer({
-    canvas: document.querySelector('.webgl')
-})
-renderer.setPixelRatio(window.devicePixelRatio)
-renderer.setSize(sizes.width, sizes.height)
+    this.animate();
+    this.onWindowResize();
+  }
 
-/**
- * Loop
- */
-const loop = () =>
-{
-    // Update
-    cube.rotation.y += 0.01
+  animate() {
+    const game = this;
+    requestAnimationFrame(() => game.animate());
 
-    // Render
-    renderer.render(scene, camera)
+    this.cube.rotation.x += 0.01;
+    this.cube.rotation.y += 0.01;
 
-    // Keep looping
-    window.requestAnimationFrame(loop)
+    this.renderer.render(this.scene, this.camera);
+  }
+
+  onWindowResize() {
+    const { sizes, camera, renderer } = this;
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
+    window.addEventListener("resize", () => {
+      // save sizes
+      sizes.width = window.innerWidth;
+      sizes.height = window.innerHeight;
+
+      //  Update Camera
+      camera.aspect = sizes.width / sizes.height;
+      camera.updateProjectionMatrix();
+
+      //  Update Renderer
+      renderer.setSize(sizes.width, sizes.height);
+    });
+  }
 }
-loop()
