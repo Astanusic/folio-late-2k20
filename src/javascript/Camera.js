@@ -10,6 +10,9 @@ export default class Camera {
     this.container = new THREE.Object3D();
     this.container.matrixAutoUpdate = false;
 
+    this.resize = this.resize.bind(this);
+    EE.on("global:resize", this.resize);
+
     this.setInstance();
     this.setOrbitControls();
   }
@@ -22,13 +25,8 @@ export default class Camera {
       80
     );
     this.instance.position.y = 5;
-    this.instance.up.set(0, 0, 1);
+    this.instance.position.z = 15;
     this.container.add(this.instance);
-
-    EE.on("global:resize", (width, height) => {
-      this.instance.aspect = width / height;
-      this.instance.updateProjectionMatrix();
-    });
   }
 
   setOrbitControls() {
@@ -36,5 +34,12 @@ export default class Camera {
       this.instance,
       this.renderer.domElement
     );
+    console.log(this.renderer);
+  }
+
+  resize(width, height) {
+    this.instance.aspect = width / height;
+    this.instance.updateProjectionMatrix();
+    console.log("resized from camera class");
   }
 }

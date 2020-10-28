@@ -4,7 +4,7 @@ export default class Sizes {
   constructor() {
     this.viewport = {};
     this.sizeViewport = document.createElement("div");
-    this.sizeViewport.style.width = "100w";
+    this.sizeViewport.style.width = "100vw";
     this.sizeViewport.style.height = "100vh";
     this.sizeViewport.style.position = "absolute";
     this.sizeViewport.style.top = "0";
@@ -26,6 +26,6 @@ export default class Sizes {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
-    EE.emit("global:resize", this.width, this.height);
+    EE.emit("global:resize", this.viewport.width, this.viewport.height);
   }
 }
