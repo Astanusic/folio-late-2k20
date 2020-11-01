@@ -5,6 +5,7 @@ import EE from "./Utils/EventEmitter";
 export default class Camera {
   constructor(_options) {
     this.sizes = _options.sizes;
+    this.time = _options.time;
     this.renderer = _options.renderer;
 
     this.container = new THREE.Object3D();
@@ -22,10 +23,8 @@ export default class Camera {
       45,
       this.sizes.viewport.width / this.sizes.viewport.height,
       1,
-      2000
+      5000
     );
-    // this.instance.position.y = 5;
-    // this.instance.position.z = 15;
     this.instance.position.set(100, 400, 400);
     this.container.add(this.instance);
   }
@@ -42,6 +41,5 @@ export default class Camera {
   resize(width, height) {
     this.instance.aspect = width / height;
     this.instance.updateProjectionMatrix();
-    console.log("resized from camera class");
   }
 }
