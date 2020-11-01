@@ -7,6 +7,7 @@ export default class Camera {
     this.sizes = _options.sizes;
     this.time = _options.time;
     this.renderer = _options.renderer;
+    this.scene = _options.scene;
 
     this.container = new THREE.Object3D();
     this.container.matrixAutoUpdate = false;
@@ -15,7 +16,7 @@ export default class Camera {
     EE.on("global:resize", this.resize);
 
     this.setInstance();
-    this.setOrbitControls();
+    // this.setOrbitControls();
   }
 
   setInstance() {
@@ -25,7 +26,8 @@ export default class Camera {
       1,
       5000
     );
-    this.instance.position.set(100, 400, 400);
+    this.instance.position.set(0, 400, 600);
+    this.instance.lookAt(this.scene.position);
     this.container.add(this.instance);
   }
 

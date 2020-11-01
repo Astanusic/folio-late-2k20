@@ -14,9 +14,11 @@ export default class App {
 
     this.sizes = new Sizes();
     this.time = new Time();
+    this.raycaster = new THREE.Raycaster();
 
     this.loop = this.loop.bind(this);
     this.resize = this.resize.bind(this);
+    this.onDocMouseDown = this.onDocMouseDown.bind(this);
     EE.on("global:tick", this.loop);
     EE.on("global:resize", this.resize);
 
@@ -24,6 +26,8 @@ export default class App {
     this.setCamera();
     this.setLights();
     this.setWorld();
+
+    document.addEventListener("mousedown", this.onDocMouseDown, false);
   }
 
   setRenderer() {
@@ -44,6 +48,7 @@ export default class App {
 
   setCamera() {
     this.camera = new Camera({
+      scene: this.scene,
       sizes: this.sizes,
       time: this.time,
       renderer: this.renderer,
@@ -93,5 +98,27 @@ export default class App {
 
   resize(width, height) {
     this.renderer.setSize(width, height);
+  }
+
+  onDocMouseDown(event) {
+    event.preventDefault();
+    this.mouse = new THREE.Vector2();
+    this.movements = [];
+    this.objects = [];
+    this.objects.push(this.scene.children[5].children[1]);
+
+    this.mouse.x =
+      (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
+    this.mouse.y =
+      (event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
+
+    this.raycaster.setFromCamera(this.mouse, this.camera.instance);
+    const intersects = this.raycaster.intersectObjects(this.objects);
+    console.log(intersects);
+
+    if (intersects.length > 0) {
+      this.movements.push(intersects[0]);
+      console.log(this.movements);
+    }
   }
 }
