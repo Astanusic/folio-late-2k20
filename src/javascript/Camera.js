@@ -19,13 +19,14 @@ export default class Camera {
 
   setInstance() {
     this.instance = new THREE.PerspectiveCamera(
-      40,
+      45,
       this.sizes.viewport.width / this.sizes.viewport.height,
       1,
-      80
+      2000
     );
-    this.instance.position.y = 5;
-    this.instance.position.z = 15;
+    // this.instance.position.y = 5;
+    // this.instance.position.z = 15;
+    this.instance.position.set(100, 400, 400);
     this.container.add(this.instance);
   }
 
@@ -34,7 +35,8 @@ export default class Camera {
       this.instance,
       this.renderer.domElement
     );
-    console.log(this.renderer);
+    this.orbitControls.target.set(0, 100, 0);
+    console.log(this.orbitControls);
   }
 
   resize(width, height) {
