@@ -1,4 +1,4 @@
-import CANNON from "cannon";
+import * as CANNON from "cannon-es";
 import EE from "../Utils/EventEmitter";
 
 export default class Physics {
@@ -48,6 +48,7 @@ export default class Physics {
     });
     // this.ninja.body.type = CANNON.Body.KINEMATIC;
     this.ninja.body.addShape(this.ninja.shape);
+    this.ninja.body.position.y = 200;
     this.world.addBody(this.ninja.body);
   }
 }

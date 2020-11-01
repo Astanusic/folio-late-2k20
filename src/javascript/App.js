@@ -3,7 +3,7 @@ import Sizes from "./Utils/Sizes";
 import Camera from "./Camera";
 import EE from "./Utils/EventEmitter";
 import Time from "./Utils/Time";
-import CANNON from "cannon";
+import * as CANNON from "cannon-es";
 import World from "./World/index";
 
 export default class App {

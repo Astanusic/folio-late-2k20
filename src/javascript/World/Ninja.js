@@ -32,12 +32,12 @@ export default class Ninja {
     loader.load(`${this.assetsPath}/gltf/Ninja-test.glb`, (gltf) => {
       player.character = gltf.scene;
       this.container.add(player.character);
-      this.container.position.y = 200;
 
       player.character.traverse((object) => {
         if (object.isMesh) {
           console.log("object =>", object);
           object.castShadow = true;
+          object.receiveShadow = true;
         }
       });
 
